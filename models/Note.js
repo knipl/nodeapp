@@ -12,7 +12,17 @@ module.exports = class Note {
   static get() {
     return noteList
   }
-  getById(id) {
-    return noteList
+  static getById(id) {
+    return noteList.filter((value) => {
+      return value.id === id
+    })
+  }
+
+  static deleteById(id) {
+    if (noteList.findIndex((value) => value.id == id) === -1) {
+      var err = new Error('Something went wrong')
+      next(err)
+    }
+    delete noteList[noteList.findIndex((value) => value.id == id)]
   }
 }
