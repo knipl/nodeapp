@@ -1,23 +1,28 @@
 const Note = require('../models/Note')
 
 exports.getNotes = (req, res) => {
-  res.send(Note.get())
+  Note.get((result) => {
+    res.send(result)
+  })
 }
 exports.getNote = (req, res) => {
-  res.send(Note.getById(req.params.id))
+  Note.getById(req.params.id, (result) => {
+    res.send(result)
+  })
 }
 exports.addNote = (req, res) => {
-  console.log(req.body)
   const newNote = new Note(req.body.text)
-  newNote.save()
-  res.sendStatus(200)
+  newNote.save((result) => {
+    res.sendStatus(result)
+  })
 }
-// exports.updateNote = (req, res) => {
-//   mockNotes[mockNotes.findIndex((value) => value.id == req.params.id)].text =
-//     req.body.text
-//   res.send(mockNotes)
-// }
+exports.updateNote = (req, res) => {
+  Note.updateNote(req.params.id, req.body.text, (result) => {
+    res.sendStatus(result)
+  })
+}
 exports.deleteNote = (req, res) => {
-  Note.deleteById(req.params.id)
-  res.sendStatus(200)
+  Note.deleteById(req.params.id, (result) => {
+    res.sendStatus(result)
+  })
 }
