@@ -1,25 +1,34 @@
+const { kStringMaxLength } = require('buffer')
 const fs = require('fs')
 const path = require('path')
 const p = path.join(path.dirname(require.main.filename), 'assets', 'data.json')
 const getDataFromFile = require('../helpers/getDataFromFile')
 
+const knex = require('knex')({
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    port: 5432,
+    user: 'postgres',
+    password: 'postgres',
+    database: 'nodeApp',
+  },
+})
+
 class Note {
   constructor(desc) {
     this.description = desc
-    this.id = (Math.random() + 1).toString(36).substring(7)
   }
 
   save(callback) {
-    getDataFromFile(p, (error, result) => {
-      if (error) return callback(500)
-      let notes = JSON.parse(result)
-      notes.push(this)
-      fs.writeFile(p, JSON.stringify(notes), (error) => {
-        console.err(error)
-        if (error) return callback(500)
-        return callback(200)
+    knex('notes')
+      .insert(this)
+      .then((result) => {
+        if (result) return callback(200)
       })
-    })
+      .catch((err) => {
+        return callback(500)
+      })
   }
   static get(callback) {
     getDataFromFile(p, (error, result) => {
