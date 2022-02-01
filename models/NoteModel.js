@@ -24,7 +24,7 @@ class Note {
     knex('notes')
       .insert(this)
       .then((result) => {
-        if (result) return callback(200)
+        if (result) return callback(payload, 200)
       })
       .catch((err) => {
         return callback(500)

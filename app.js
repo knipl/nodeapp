@@ -2,13 +2,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 const noteRoutes = require('./routes/notes')
+const userRoutes = require('./routes/user')
 
 app.use(express.json())
 app.use('/notes', noteRoutes)
-
-app.use('/', (req, res) => {
-  res.send('Hello World!' + "<br><a href='/users'>Users</a>")
-})
+app.use('/users', userRoutes)
 
 app.get('/users/:id', (req, res) => {
   res.send(

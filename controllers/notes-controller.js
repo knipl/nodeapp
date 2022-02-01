@@ -12,7 +12,8 @@ exports.getNote = (req, res) => {
 }
 exports.addNote = (req, res) => {
   const newNote = new Note(req.body.text)
-  newNote.save((result) => {
+  newNote.save((payload, result) => {
+    console.log(payload)
     res.sendStatus(result)
   })
 }
