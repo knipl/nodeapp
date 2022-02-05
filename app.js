@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const noteRoutes = require('./routes/notes')
-const userRoutes = require('./routes/user')
+const noteRoutes = require('./routes/notes-routes')
+const userRoutes = require('./routes/user-routes')
 
 app.use(express.json())
 
