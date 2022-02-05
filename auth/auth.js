@@ -2,20 +2,20 @@ const crypto = require('crypto')
 
 exports.validateRegData = ({ email, password, password_confirmation }) => {
   if (!email || !password || !password_confirmation) {
-    return false
+    return ['missing email or password or password confirmaiton']
   }
   if (password !== password_confirmation) {
-    return false
+    return ['passwords dosent match']
   }
-  return true
+  return []
 }
 
 exports.validateLoginData = ({ email, password }) => {
-  const errors = []
   if (!email || !password) {
-    return errors.push('missing email or password')
+    return ['missing email or password']
+  } else {
   }
-  return errors
+  return []
 }
 
 exports.hashPw = (pw) => {
