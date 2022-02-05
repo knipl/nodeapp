@@ -32,7 +32,7 @@ class Note {
       })
   }
 
-  static getUser(callback, email) {
+  static getUser(email, callback) {
     knex
       .select('id', 'email', 'password')
       .from('users')

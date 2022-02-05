@@ -5,11 +5,18 @@ const jwt = require('jsonwebtoken')
 exports.register = (req, res) => {
   const errors = validateRegData(req.body)
   if (!errors.length) {
+    const email = req.body.email
+    User.getUser(email, (result, code) => {
+      if (result[0]) {
+        return res.status(409).send('User Already Exist. Please Login')
+      }
+    })
+
     const newUser = new User(req.body.email, hashPw(req.body.password))
     newUser.save((result) => {
-      res.send(result)
+      res.status(200).send({ code: 200, message: 'now you can log in' })
     })
-  } else res.send({ code: 400, errors })
+  } else res.status(400).send({ code: 400, errors })
 }
 
 exports.login = (req, res) => {
@@ -17,7 +24,7 @@ exports.login = (req, res) => {
   if (!errors.length) {
     const email = req.body.email
     const password = req.body.password
-    User.getUser((result, code) => {
+    User.getUser(email, (result, code) => {
       const user = result[0]
       if (user && user.password === hashPw(password)) {
         const token = jwt.sign(
@@ -37,9 +44,9 @@ exports.login = (req, res) => {
         res.status(500)
         res.send({ code: 400, errors: ['wrong password or email'] })
       }
-    }, email)
+    })
   } else {
-    res.send({ code: 400, errors })
+    res.status(400).send({ code: 400, errors })
   }
 }
 
