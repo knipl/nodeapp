@@ -37,9 +37,10 @@ class Note {
       .select('id', 'email', 'password')
       .from('users')
       .where('email', email)
-      .then((result) => {
-        console.log('db result: ', result)
-        if (result) return callback(result, 200)
+      //TODO: .first() or [user]
+      .then(([user]) => {
+        console.log('db result: ', user)
+        if (user) return callback(user, 200)
       })
       .catch((err) => {
         return callback(err, 500)

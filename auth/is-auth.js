@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+const { decodeToken } = require('./auth')
 
 module.exports = (req, res, next) => {
   const token = req.headers['authorization']
@@ -7,13 +7,9 @@ module.exports = (req, res, next) => {
   }
 
   try {
-    console.log(token, { replaced: token.replace(/^Bearer\s+/, '') })
-    const replacedToken = token.replace(/^Bearer\s+/, '')
-    const decoded = jwt.verify(replacedToken, 'THISISMYTOKENKEY')
-    req.user = decoded
-    console.log({ decoded })
+    req.user = decodeToken(token)
+    return next()
   } catch {
     return res.status(401).send('Invalid Token')
   }
-  return next()
 }

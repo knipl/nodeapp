@@ -10,4 +10,6 @@ router.get('/home', isAuth, (req, res) => {
   res.send('Welcome! 🙌 ')
 })
 
+router.get('/refresh-token', isAuth, userController.getRefreshToken)
+
 module.exports = router
